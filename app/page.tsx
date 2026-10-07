@@ -1,180 +1,134 @@
-"use client";
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function Home() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  
-  const [status, setStatus] = useState('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('Sending...');
-    
-    try {
-      // Jab aapka backend Render par live ho jayega, tab localhost ko live link se badal denge
-      const response = await fetch('http://localhost:5000/api/enquiries/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setStatus('Thank you! Enquiry saved successfully! 🎉');
-        setFormData({ name: '', email: '', phone: '', message: '' });
-      } else {
-        setStatus('Something went wrong. Please try again ❌');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setStatus('Server connection failed ❌');
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans p-6 md:p-12">
-      {/* Hero Section */}
-      <div className="max-w-6xl mx-auto text-center my-12">
-        <span className="bg-indigo-600/20 text-indigo-400 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">
-          ARS Imperial Landmark
-        </span>
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mt-4 text-white">
-          Welcome to ARS Imperial Landmark
-        </h1>
-        <p className="text-lg text-slate-400 mt-4 max-w-2xl mx-auto">
-          Delivering trusted mobility solutions and exceptional customer experiences across passenger, commercial, and electric vehicle segments.
-        </p>
-      </div>
-
-      {/* Business Verticals / attractive Showcase Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 my-16">
-        {/* Four Wheelers */}
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 shadow-xl hover:border-indigo-500/50 transition-all overflow-hidden group">
-          <img 
-            src="https://unsplash.com" 
-            alt="Four Wheelers Showcase" 
-            className="w-full h-48 object-cover rounded-xl mb-4 group-hover:scale-105 transition-transform duration-300"
-          />
-          <h3 className="text-xl font-bold text-white mb-2">ARS Global Automotive</h3>
-          <p className="text-sm text-slate-400">Premium passenger vehicle segments featuring top automotive brands with world-class retail networks.</p>
-        </div>
-
-        {/* Two Wheelers */}
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 shadow-xl hover:border-indigo-500/50 transition-all overflow-hidden group">
-          <img 
-            src="https://unsplash.com" 
-            alt="Two Wheelers Showcase" 
-            className="w-full h-48 object-cover rounded-xl mb-4 group-hover:scale-105 transition-transform duration-300"
-          />
-          <h3 className="text-xl font-bold text-white mb-2">ARS MotoCorp</h3>
-          <p className="text-sm text-slate-400">Leading two-wheeler ventures ranging from high-performance cruisers to eco-friendly advanced EVs.</p>
-        </div>
-
-        {/* Commercial Vehicles */}
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 shadow-xl hover:border-indigo-500/50 transition-all overflow-hidden group">
-          <img 
-            src="https://unsplash.com" 
-            alt="Commercial Showcase" 
-            className="w-full h-48 object-cover rounded-xl mb-4 group-hover:scale-105 transition-transform duration-300"
-          />
-          <h3 className="text-xl font-bold text-white mb-2">ARS Commercial Mobility</h3>
-          <p className="text-sm text-slate-400">Heavy-duty transport systems, multi-axle logistics carriers, and sustainable business fleet applications.</p>
-        </div>
-      </div>
-
-      {/* Contact & Map Section */}
-      <div className="max-w-xl mx-auto bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl my-12">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Request a Quote / Enquiry</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Name</label>
-            <input 
-              type="text" 
-              name="name" 
-              value={formData.name} 
-              onChange={handleChange} 
-              required 
-              className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500" 
-              placeholder="Enter your name"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Phone Number</label>
-            <input 
-              type="tel" 
-              name="phone" 
-              value={formData.phone} 
-              onChange={handleChange} 
-              required 
-              className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500" 
-              placeholder="Enter your phone number"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
-            <input 
-              type="email" 
-              name="email" 
-              value={formData.email} 
-              onChange={handleChange} 
-              required 
-              className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500" 
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Message</label>
-            <textarea 
-              name="message" 
-              value={formData.message} 
-              onChange={handleChange} 
-              required 
-              rows={3} 
-              className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500" 
-              placeholder="Which brand or vehicle are you interested in?"
-            />
-          </div>
-
-          <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-xl font-medium shadow-lg transition-colors">
-            Submit Enquiry
-          </button>
-        </form>
-
-        {/* Real Showroom Google Map Embedding */}
-        <div className="w-full mt-8 overflow-hidden rounded-xl shadow-md border border-slate-700">
-          <iframe 
-            src="https://google.com" 
-            width="100%" 
-            height="260" 
-            style={{ border: 0 }} 
-            allowFullScreen={true} 
-            loading="lazy" 
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-
-        {status && (
-          <p className="mt-4 text-center text-sm font-medium text-indigo-400 bg-indigo-950/40 p-2 rounded-lg border border-indigo-900/50">
-            {status}
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+      
+      {/* 1. HERO SECTION */}
+      <header className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white py-20 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <span className="bg-indigo-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+            Welcome to
+          </span>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mt-4 mb-6">
+            ARS Imperial Landmark
+          </h1>
+          <p className="text-lg md:text-xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
+            Delivering trusted mobility solutions and exceptional customer experiences through a comprehensive network of 24+ dealerships across North and East India.
           </p>
-        )}
-      </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <a 
+              href="https://wa.me" 
+              target="_blank" 
+              className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-3 rounded-lg shadow-lg transition"
+            >
+              Connect on WhatsApp
+            </a>
+            <a href="#verticals" className="bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-lg transition">
+              Our Businesses
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* 2. STATS OVERVIEW */}
+      <section className="max-w-6xl mx-auto -mt-10 px-6 grid grid-cols-1 sm:grid-cols-3 gap-6 relative z-10">
+        <div className="bg-white p-6 rounded-xl shadow-xl border border-slate-100 text-center">
+          <h3 className="text-3xl font-bold text-indigo-600">24+</h3>
+          <p className="text-sm text-slate-500 font-medium uppercase mt-1">Trusted Dealerships</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-xl border border-slate-100 text-center">
+          <h3 className="text-3xl font-bold text-indigo-600">68+</h3>
+          <p className="text-sm text-slate-500 font-medium uppercase mt-1">Outlets Across India</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-xl border border-slate-100 text-center">
+          <h3 className="text-3xl font-bold text-indigo-600">29+ Years</h3>
+          <p className="text-sm text-slate-500 font-medium uppercase mt-1">Industry Legacy</p>
+        </div>
+      </section>
+
+      {/* 3. ABOUT THE GROUP */}
+      <section className="max-w-4xl mx-auto py-16 px-6 text-center">
+        <h2 className="text-3xl font-bold text-slate-900 mb-4">About Our Group</h2>
+        <p className="text-slate-600 leading-relaxed">
+          ARS Imperial Landmark was established in 2020, building on a 29-year legacy in the automotive dealership industry through its predecessor, ARS Automotive. Under the leadership of Mr. Sahil Singh (CMD), the business was strategically structured into specialized verticals to streamline operations, strengthen brand partnerships, and expand its footprint.
+        </p>
+      </section>
+
+      {/* 4. BUSINESS VERTICALS */}
+      <section id="verticals" className="bg-slate-100 py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900">Our Strategic Business Verticals</h2>
+            <p className="text-slate-500 mt-2">Powering mobility across multiple distinct domains</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* Vertical 1 */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between">
+              <div>
+                <div className="text-indigo-600 font-bold text-xs uppercase mb-2 tracking-wide">4-Wheelers</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">ARS Global Automotive</h3>
+                <p className="text-sm text-slate-600 mb-4">Leading passenger vehicle brands delivering excellence in the four-wheeler retail segment.</p>
+                <div className="border-t pt-3">
+                  <span className="text-xs font-semibold text-slate-400 block mb-2">PARTNER BRANDS:</span>
+                  <p className="text-xs text-slate-700 bg-slate-50 p-2 rounded">Mahindra, Toyota, Kia, Jeep, Maruti Suzuki, Tata Motors, Honda, Hyundai</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Vertical 2 */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between">
+              <div>
+                <div className="text-indigo-600 font-bold text-xs uppercase mb-2 tracking-wide">2-Wheelers</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">ARS MotoCorp</h3>
+                <p className="text-sm text-slate-600 mb-4">Comprehensive range of premium, performance, and everyday commuter two-wheelers including EV solutions.</p>
+                <div className="border-t pt-3">
+                  <span className="text-xs font-semibold text-slate-400 block mb-2">PARTNER BRANDS:</span>
+                  <p className="text-xs text-slate-700 bg-slate-50 p-2 rounded">Komaki, Bajaj, TVS, Hero MotoCorp, KTM, Royal Enfield, Triumph, Vespa, Aprilia</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Vertical 3 */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between">
+              <div>
+                <div className="text-indigo-600 font-bold text-xs uppercase mb-2 tracking-wide">Commercial</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">ARS Commercial Mobility</h3>
+                <p className="text-sm text-slate-600 mb-4">Heavy-duty transport, trucks, buses, and smart green commercial EV mobility setups.</p>
+                <div className="border-t pt-3">
+                  <span className="text-xs font-semibold text-slate-400 block mb-2">PARTNER BRANDS:</span>
+                  <p className="text-xs text-slate-700 bg-slate-50 p-2 rounded">Alti Green, Mahindra Commercial, Tata Motors Commercial, Ashok Leyland</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 5. FOOTER & CONTACT INFO */}
+      <footer className="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h4 className="text-white text-lg font-bold mb-3">ARS Imperial Landmark</h4>
+            <p className="text-sm max-w-sm leading-relaxed">
+              Building on a 29-year legacy to deliver exceptional mobility solutions across two-wheeler, four-wheeler, and commercial segments.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-white text-lg font-bold mb-3">Contact Details</h4>
+            <p className="text-sm mb-1"><strong>Phone/WhatsApp:</strong> 6202122112</p>
+            <p className="text-sm mb-1"><strong>Timings:</strong> 10:00 AM - 07:00 PM</p>
+            <p className="text-sm mt-3"><strong>Location:</strong> KOMAKI Noida (ARS MOTOCORP), Pillar number 99, Dadri Main Rd, Bhangel, Noida, UP - 201301</p>
+          </div>
+        </div>
+        <div className="text-center text-xs text-slate-600 mt-10 pt-6 border-t border-slate-800/60">
+          &copy; {new Date().getFullYear()} ARS Imperial Landmark. All rights reserved.
+        </div>
+      </footer>
+
     </div>
   );
 }
